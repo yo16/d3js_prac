@@ -7,20 +7,27 @@
   </head>
   <body>
     <script>
-        var dataset = [1,2,3,4,5];
-        d3.select("body").selectAll("p")
+        var svg = d3.select("body").append("svg")
+            .attr("width",500)
+            .attr("height",100)
+        ;
+        var dataset = [1,2,3,4,5,6,7]
+        var circles = svg.selectAll("circle")
             .data(dataset)
             .enter()
-            .append("p")
-            .text((d)=>{return "Hello! " + d})
-            .style("color",(d)=>{
-                if(d%2==0){
-                    return "red";
-                } else {
-                    return "blue";
-                }
+            .append("circle")
+            .attr("cx", (d, i) => {
+                return (i*50)+25;
             })
-        ;
+            .attr("cy", 50)
+            .attr("r", (d) => {
+                return 5*d;
+            })
+            .attr("fill", "yellow")
+            .attr("stroke", "orange")
+            .attr("stroke-width", (d)=>{
+                return d;
+            });
     </script>
   </body>
 </html>
