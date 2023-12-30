@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>D3 Test d3-hierarchy</title>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
+    <style>
+    .link {
+      fill: none;
+      stroke: #555;
+      stroke-opacity: 0.4;
+      stroke-width: 1.5px;
+    }
+    </style>
+  </head>
+  <body>
+    <svg width="800" height="600"></svg>
+    <script>
+        var width = document.querySelector("svg").clientWidth;
+        //var width = 300;
+        var height = document.querySelector("svg").clientHeight;
+
+        var data =
+            {
+                "id": 1,
+                "name": "A",
+                "color": "red",
+                "children": [
+                    {
+                        "name": "B",
+                        "color": "blue"
+                    },
+                    {
+                        "name": "C",
+                        "color": "yellow",
+                        "children": [{ "name": "D" }, { "name": "E" }]
+                    },
+                    {
+                        "name": "F"
+                    },
+                    {
+                        "name": "G",
+                        "children": [{ "name": "H" }]
+                    },
+                    {
+                        "name": "I"
+                    }
+                ] 
+            }
+        ;
+        var root = d3.hierarchy(data);
+        console.log(root);
+
+        var is_cluster = false;
+        if (is_cluster){
+            // cluster関数を作成
+            var cluster = d3.cluster()
+                .size([height, width - 160])
+            ;
+            // 適用
+            cluster(root);
+        }else{
+            var tree = d3.tree()
+                .size([height, width - 160])
+            ;
+            tree(root);
+        }
+        //d3.cluster(root);
+        console.log(root);
+
+        // svg要素の配置
+        g = d3.select("svg")
+            .append("g")
+            .attr("transform", "translate(80,0)");
+        
+        var link = g.selectAll(".link")
+            .data(root.descendants().slice(1))
+            .enter()
+            .append("path")
+            .attr("class", "link")
+            .attr("d", (d)=>{
+                return `M ${d.y},${d.x} `
+                    + `C${(d.y+d.parent.y)/2},${d.x} `
+                    + `${(d.y+d.parent.y)/2},${d.parent.x} `
+                    + `${d.parent.y},${d.parent.x}`;
+            })
+        ;
+        
+        var node = g.selectAll(".node")
+            .data(root.descendants())
+            .enter()
+            .append("g")
+            .attr("class", "node")
+            .attr("transform", (d)=>{
+                return `translate(${d.y},${d.x})`;
+            })
+        ;
+        
+        node.append("circle")
+            .attr("r", 8)
+            //.attr("fill", "#999")
+            .attr("fill", (d)=>{return d.data.color ? d.data.color : "#000"})
+        ;
+
+        node.append("text")
+            .attr("dy", 3)
+            .attr("x", (d)=>{ return d.children ? -12 : 12; })
+            .style("text-anchor", (d)=>{ return d.children ? "end" : "start"; })
+            .attr("font-size", "200%")
+            .text((d)=>{ return d.data.name; })
+        ;
+
+    </script>
+  </body>
+</html>
