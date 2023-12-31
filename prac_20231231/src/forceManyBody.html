@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>D3 Test: force-directed network diagram</title>
+        <script src="https://d3js.org/d3.v5.min.js"></script>
+    </head>
+    <body>
+        <script>
+            const distance = 150;
+            const width = 500;
+            const height = 500;
+
+            const nodes = [
+                { node:"A", x:distance, y:distance, r:15},
+                { node:"B", x:0, y:distance, r:20},
+                { node:"C", x:-distance, y:distance, r:5},
+                { node:"D", x:distance, y:0, r:25},
+                { node:"E", x:0, y:0, r:15},
+                { node:"F", x:-distance, y:0, r:20},
+                { node:"G", x:distance, y:-distance, r:5},
+                { node:"H", x:0, y:-distance, r:25},
+                { node:"I", x:-distance, y:-distance, r:15},
+            ];
+            const color = d3.scaleOrdinal(d3.schemeCategory10)
+                .domain([0, nodes.length])
+            ;
+            const svg = d3.select("body").append("svg")
+                .attr("width", width)
+                .attr("height", height)
+                .style("background-color", "#eea")
+            ;
+            
+            // 背景
+            var g_st = svg.append("g")
+                .attr("class", "start")
+                .attr("transform", `translate(${width/2},${height/2})`)
+                .style("opacity", "0.2")
+            ;
+            g_st.selectAll("line.vertical")
+                .data([-distance, 0, distance]).join("line")
+                .attr("class", "vertical")
+                .attr("x1", d=>d)
+                .attr("y1", -height)
+                .attr("x2", d=>d)
+                .attr("y2", height)
+                .attr("stroke", "black")
+            ;
+            g_st.selectAll("line.horizontal")
+                .data([-distance, 0, distance]).join("line")
+                .attr("class", "horizontal")
+                .attr("x1", -width)
+                .attr("y1", d=>d)
+                .attr("x2", width)
+                .attr("y2", d=>d)
+                .attr("stroke", "black")
+            ;
+            g_st.selectAll("circle")
+                .data(nodes).join("circle")
+                .attr("r", d => d.r)
+                .attr("cx", d => d.x)
+                .attr("cy", d => d.y)
+                .style("fill", (d,i) => color(i))
+            ;
+            g_st.selectAll("text")
+                .data(nodes).join("text")
+                .attr("x", d => d.x)
+                .attr("y", d => d.y)
+                .text(d => d.node)
+                .style("text-anchor","middle")
+                .style("dominant-baseline","middle")
+            ;
+
+            const g_mv = svg.append("g")
+                .attr("class", "move")
+                .attr("transform", `translate(${width/2},${height/2})`)
+            ;
+            
+            const sim = d3.forceSimulation(nodes)
+                .force("manybody",d3.forceManyBody())
+                //.force("manybody", d3.forceManyBody().strength(50))
+                .force("collide", d3.forceCollide().radius(d => d.r))
+                .force("forceX", d3.forceX().strength(0.02))
+                .force("forceY", d3.forceY().strength(0.1))
+                //.force("radial", d3.forceRadial().radius(100).strength(0.05))
+                //.force("radial", d3.forceRadial((d,i)=>i==0?0:i%2==0?150:75))
+            ;
+            function redraw(){
+                g_mv.selectAll("circle")
+                    .data(nodes).join("circle")
+                    .attr("class", "moveElm")
+                    .attr("r", d => d.r)
+                    .attr("cx", d => d.x)
+                    .attr("cy", d => d.y)
+                    .style("fill", (d,i) => color(i))
+                ;
+                g_mv.selectAll("text")
+                    .data(nodes).join("text")
+                    .attr("class", "moveElm")
+                    .attr("x", d => d.x)
+                    .attr("y", d => d.y)
+                    .text(d => d.node)
+                    .style("text-anchor","middle")
+                    .style("dominant-baseline","middle")
+                ;
+            }
+
+            /*
+            // add listener
+            sim.on("tick", d => g_mv.selectAll(".moveElm")
+                .attr("cx", d=>d.x)
+                .attr("cy", d=>d.y)
+                .attr("x", d=>d.x)
+                .attr("y", d=>d.y)
+            );
+            */
+            sim.on("tick", redraw());
+        </script>
+        <hr />
+        参考:<a href="https://www.amazon.co.jp/Learn-D3-js-interactive-data-driven-visualizations/dp/1838645578/ref=tmm_pap_swatch_0?_encoding=UTF8&qid=1704001938&sr=8-5">Amazon | Learn D3.js: Create interactive data-driven visualizations for the web with the D3.js library | da Rocha, Helder | Data & Information Visualization</a> Chapter10
+    </body>
+</html>
