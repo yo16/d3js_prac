@@ -30,7 +30,8 @@
             ;
             
             const sim = d3.forceSimulation(nodes)
-                .force("manybody",d3.forceManyBody())
+                //.force("manybody",d3.forceManyBody())
+                .force("forcex", d3.forceX().strength(-0.03))
             ;
             chart.selectAll("circle")
                 .data(nodes).join("circle")
