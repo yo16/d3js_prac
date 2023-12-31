@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>D3 Test: force-directed network diagram</title>
+        <script src="https://d3js.org/d3.v5.min.js"></script>
+    </head>
+    <body>
+        <script>
+            const nodes = [
+                { node:"A", value:79 },
+                { node:"B", value:15 },
+                { node:"C", value:24 },
+                { node:"D", value:44 },
+                { node:"E", value:125 },
+                { node:"F", value:22 },
+                { node:"G", value:20 },
+                { node:"H", value:64 },
+            ];
+            const color = d3.scaleOrdinal(d3.schemeCategory10)
+                .domain([0, nodes.length])
+            ;
+            const svg = d3.select("body").append("svg")
+                .attr("width", 400)
+                .attr("height", 400)
+                .style("background-color", "#eea")
+            ;
+            const chart = svg.append("g")
+                .attr("transform", `translate(${[200,200]})`)
+            ;
+            
+            const sim = d3.forceSimulation(nodes)
+                .force("manybody",d3.forceManyBody())
+            ;
+            chart.selectAll("circle")
+                .data(nodes).join("circle")
+                .attr("r", 15)
+                .attr("cx", d => d.x)
+                .attr("cy", d => d.y)
+                .style("fill", (d,i) => color(i))
+            ;
+
+            // add listener
+            sim.on("tick", d => chart.selectAll("circle")
+                .attr("cx", d=>d.x)
+                .attr("cy", d=>d.y)
+            );
+        </script>
+        <hr />
+        参考:<a href="https://www.amazon.co.jp/Learn-D3-js-interactive-data-driven-visualizations/dp/1838645578/ref=tmm_pap_swatch_0?_encoding=UTF8&qid=1704001938&sr=8-5">Amazon | Learn D3.js: Create interactive data-driven visualizations for the web with the D3.js library | da Rocha, Helder | Data & Information Visualization</a> Chapter10
+    </body>
+</html>
