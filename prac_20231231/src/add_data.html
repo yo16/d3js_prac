@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <title>D3 Test: add data</title>
+        <script src="https://d3js.org/d3.v5.min.js"></script>
+        <style type="text/css">
+        </style>
+    </head>
+    <body>
+        <select id="selElms" multiple>
+            <option>elm-1</option>
+            <option>elm-2</option>
+        </select>
+        <button onclick="(()=>{
+            var sel = document.getElementById('selElms');
+            var opt = document.createElement('option');
+            opt.text = `elm-${sel.length+1}`;
+            sel.appendChild(opt);
+
+            showSvg();
+        })();">add</button>
+        <button onclick="(()=>{
+            var sel = document.getElementById('selElms');
+            sel.remove(sel.length-1);
+
+            showSvg();
+        })();">del</button>
+
+        <hr />
+
+        <svg></svg>
+        <script>
+            function showSvg(){
+                var dataset = [];
+                var sel = document.getElementById("selElms");
+                for(let i=0; i<sel.options.length; i++){
+                    dataset.push(sel.options[i].text);
+                }
+    
+                var width = 300;
+                var height = 300;
+                var svg = d3.select("svg")
+                    .attr("width",width)
+                    .attr("height",height)
+                ;
+                // datasetを作る
+                var texts = svg.selectAll("text")
+                    .data(dataset)
+                ;
+                // 余計な要素を除去
+                texts.exit().remove();
+                // 新規・更新要素の変更を反映
+                texts
+                    .enter()
+                    .append("text")
+                    .attr("x", "20")
+                    .attr("y", (d,i)=>{
+                        return i*30+20;
+                    })
+                    .attr("fill", "red")
+                    .attr("stroke", "blue")
+                    .text(d=>d)
+                ;
+            };
+            showSvg();
+        </script>
+
+        <hr />
+        
+        参考:<a href="https://kita-note.com/d3-basic-001">D3.js｜enter、update、exit の使い方 | kitanote</a>
+    </body>
+</html>
