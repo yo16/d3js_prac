@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Timeline Scatter Plot</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <script src="./TimelineScatter_data.js"></script>
+    <script src="./TimelineScatterplot.js" defer></script>
+    <style>
+        /* Basic styling */
+        .container {
+            display:flex;
+            align-items:center;
+            width:90%;
+            height:70vh;
+            background:#333;
+            
+            .chart {
+                width:100%;
+                height:300px;
+                background:whitesmoke;
+                cursor:move;
+            }
+        }
+
+        /* SVG styling */
+        .axis {
+            path {
+                fill: none;
+                shape-rendering: crispEdges;
+                stroke-width:0;
+            }
+
+            line {
+                fill:none;
+                stroke-width:1.2;
+                stroke:grey;
+                opacity:.5;
+            }
+
+            text {
+                font-family: sans-serif;
+                font-size: 11px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Timeline Scatter Plot</h1>
+    <div class="container">
+        <div class="chart"></div>
+    </div>
+    参考
+    <ul>
+        <li><a href="https://codepen.io/gvenech/pen/YyPKYM">Timeline - Scatterplot</a></li>
+        <li><a href="https://stackoverflow.com/questions/17560051/d3-js-time-series-infinite-scroll">javascript - d3.js time series infinite scroll - Stack Overflow</a></li>
+        <li><a href="https://toach.biz/blog/what-is-axis-in-d3/">D3.js入門 - グラフに添える軸の表示</a></li>
+    </ul>
+</body>
+</html>
