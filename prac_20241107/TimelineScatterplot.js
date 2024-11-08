@@ -24,9 +24,11 @@ let age_extent = d3.extent(chart_data, function(d) { return d.age; });
 const now = new Date(2015, 8, 16);
 // スケール
 var scale = 1.25;
-// 読み込んだxの最小値
+// 読み込んだxの、translateの最小値
+// データを読み込むたびに更新する
 var min_translate_x = 0;
-// 最大
+// transformのtranslateで指定する、x方向の最大値
+// x_scaleを作った後に、計算して、その後変更しない
 var max_translate_x; // Calculated after initial scaling
 
 // Get and save properties of the container
@@ -108,6 +110,8 @@ let circles = group.selectAll('.point')
 ;
 
 // Zoom/Pan behavior
+// panという変数は、zoomの動作を定義するだけ
+// 後でこれをviz(svg要素)に適用させる
 //var pan = d3.behavior.zoom()
 let pan = d3.zoom()
                 //.x(x_scale)                   // zoomの初期値
@@ -132,6 +136,7 @@ let pan = d3.zoom()
                         // 右端（now）を超えないよう制限
                         if (!isNaN(max_translate_x) && current_max > now.getTime()) {
                             console.log("最大までスクロール");
+                            // 初期状態（d3.zoomIdentity）に対して、translateをする
                             // x軸の左端をmax_translate_xに、y軸の上端を0にする
                             const clampedTransform = d3.zoomIdentity.translate(max_translate_x, 0);
                             viz.call(pan.transform, clampedTransform);
@@ -145,9 +150,7 @@ let pan = d3.zoom()
                         //if (pan.translate()[0] > min_translate_x) {
                         // 最小値を超えた分、移動させたとき、データを更新する
                         if (min_translate_x < event.transform.x) {
-                            console.log("update 1!");
                             updateData();
-                            console.log("update 2!");
                             addNewPoints();
                             
                             // Just to illustrate what's happening
@@ -168,15 +171,19 @@ let pan = d3.zoom()
 ;
 
 // Apply the behavior
-// panという変数は、zoomの動作を定義するだけ
-// それをviz(svg要素)に適用させる
+// zoom機能を定義した"pan"を、vizに反映させる
 viz.call(pan);
 
 // Now that we've scaled in, find the farthest point that
 // we'll allow users to pan forward in time (to the right)
+// これで拡大縮小が完了したので、次のような最も遠いポイントを見つけます。
+// ユーザーが時間的に前方（右方向・過去方向）にパンできるようにします。
+// widthから、右端に来るnowの座標値を引くと、translateする右の限界点が出る。
+// zoomedで、xはこれ以上大きくしない（これ以上右へパンさせない）ようにコントロールする。
+//console.log({width});   // 954
+//console.log(x_scale(new Date(now)));    // 1351.875...
 max_translate_x = width - x_scale(new Date(now));
-//max_translate_x = width - x_scale(new Date(date_extent[1]));    // 最大値を設定
-//console.log({max_translate_x});
+// pan.transformの初期値を、右端の限界位置にする
 //viz.call(pan.translate([max_translate_x, 0]).event); 
 viz.call(pan.transform, d3.zoomIdentity.translate(max_translate_x, 0));
 
