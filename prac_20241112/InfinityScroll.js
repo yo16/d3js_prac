@@ -84,8 +84,9 @@ tiles = () => {
                 .attr("y", d => scaleY(d.y))
                 .attr("width", cellSize)
                 .attr("height", cellSize)
-                .attr("fill", "#e66")
-                .attr("stroke", "black")
+                .attr("fill", "#e99")
+                .attr("stroke", "#fff")
+                .attr("stroke-width", "2")
                 .attr("name", d => d.value)
         ;
         g2.selectAll("text")
@@ -96,6 +97,7 @@ tiles = () => {
                 .attr("y", d => scaleY(d.y) + cellSize / 2)
                 .attr("text-anchor", "middle")
                 .attr("font-size", "14px")
+                .attr("fill", "#555")
                 .attr("dy", ".35em")
                 .text(d => d.value)
         ;
