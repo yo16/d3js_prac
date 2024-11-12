@@ -1,4 +1,4 @@
-map = () => {
+tiles = () => {
     // スケールを定義
     let scaleX = d3.scaleLinear()
         .domain([0, width / cellSize])
@@ -177,7 +177,7 @@ height = 400;
 width = 500;
 cellSize = 50;
 
-svg = map();
+svg = tiles();
 document.getElementById("div1")
     .append(svg);
 
