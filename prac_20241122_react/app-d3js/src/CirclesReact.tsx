@@ -12,7 +12,7 @@ const generateDataset = (): number[][] => {
     ]))
 };
 
-export const Circles = () => {
+export const CirclesReact = () => {
     // dataset
     const [dataset, setDataset] = useState<number[][]>(
         generateDataset()
