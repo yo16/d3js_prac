@@ -1,10 +1,11 @@
-import { Circle } from "./Circle"
+/*import { Circle } from "./Circle"*/
+import { Circles } from "./Circles"
 import './App.css'
 
 export function App() {
   return (
     <>
-      <Circle />
+      <Circles />
     </>
   )
 }
