@@ -24,7 +24,7 @@ export const AnimatedCirclesD3 = () => {
 
     useInterval(() => {
         setVisibleCircles(generateCircles());
-    }, 1500);
+    }, 2000);
 
     useEffect(() => {
         const svgElement = d3.select(refSvg.current);
@@ -47,23 +47,21 @@ export const AnimatedCirclesD3 = () => {
                 ),
                 update => (
                     update
-                        .call(update => (
-                            update.transition().duration(500)
-                                .attr("fill", "lightgrey")
-                        ))
+                        .transition().duration(1200)
+                            .attr("fill", "goldenrod")
                 ),
                 exit => (
-                    exit.attr("fill", "tomato")
-                        .call(exit => (
-                            exit.transition().duration(1200)
-                                .attr("cy",20)
-                                .attr("r", 0)
-                                .style("opacity", 0)
-                                .remove()
-                        ))
+                    exit
+                        .attr("fill", "tomato")
+                        .transition().duration(1200)
+                            .attr("cy",20)
+                            .attr("r", 0)
+                            .style("opacity", 0)
+                            .remove()
                 )
             )
         ;
+        console.log(visibleCircles);
     }, [visibleCircles]);
 
     return (
