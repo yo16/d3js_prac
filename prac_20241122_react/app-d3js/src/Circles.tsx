@@ -1,5 +1,4 @@
-import { useState, useRef, useEffect } from "react";
-import * as d3 from "d3";
+import { useState } from "react";
 
 import useInterval from "./customHooks/useInterval";
 
@@ -18,19 +17,6 @@ export const Circles = () => {
     const [dataset, setDataset] = useState<number[][]>(
         generateDataset()
     );
-    const svgRef = useRef<SVGSVGElement | null>(null);
-
-    // 描画直前の処理
-    useEffect(() => {
-        const svgElement = d3.select(svgRef.current);
-        svgElement.selectAll("circle")
-            .data(dataset)
-            .join("circle")
-                .attr("cx", d => d[0])
-                .attr("cy", d => d[1])
-                .attr("r", 3)
-        ;
-    }, [dataset]);
 
     // 定期的に更新
     useInterval(() => {
@@ -39,9 +25,15 @@ export const Circles = () => {
     }, 2000);
 
     return (
-        <svg
-            viewBox="0 0 100 50"
-            ref={svgRef}
-        />
+        <svg viewBox="0 0 100 50">
+            {dataset.map(([x,y], i) => (
+                <circle
+                    key={`circle_${i}`}
+                    cx={x}
+                    cy={y}
+                    r="3"
+                />
+            ))}
+        </svg>
     );
 }
