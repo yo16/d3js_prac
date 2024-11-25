@@ -15,6 +15,7 @@ export function App() {
             <h2>Reactで同様の機能</h2>
             <CirclesReact />
             <h2>D3.jsを使った動くcircle</h2>
+            発生(enter)時に青、連続で選ばれたら灰色、選ばれない(exit)時に赤
             <AnimatedCirclesD3 />
         </>
     )

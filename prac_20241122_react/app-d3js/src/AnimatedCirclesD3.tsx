@@ -37,6 +37,7 @@ export const AnimatedCirclesD3 = () => {
                         .attr("cy", 20)
                         .attr("r", 0)
                         .attr("fill", "cornflowerblue")
+                        .attr("opacity", 0)
                         .call(enter => (
                             enter.transition().duration(1200)
                                 .attr("cy", 5)
@@ -45,7 +46,11 @@ export const AnimatedCirclesD3 = () => {
                         ))
                 ),
                 update => (
-                    update.attr("fill", "lightgrey")
+                    update
+                        .call(update => (
+                            update.transition().duration(500)
+                                .attr("fill", "lightgrey")
+                        ))
                 ),
                 exit => (
                     exit.attr("fill", "tomato")
@@ -53,7 +58,7 @@ export const AnimatedCirclesD3 = () => {
                             exit.transition().duration(1200)
                                 .attr("cy",20)
                                 .attr("r", 0)
-                                .style("opacity", 1)
+                                .style("opacity", 0)
                                 .remove()
                         ))
                 )
