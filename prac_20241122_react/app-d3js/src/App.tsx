@@ -3,6 +3,8 @@ import { CirclesD3 } from "./CirclesD3";
 import { CirclesReact } from "./CirclesReact";
 import { AnimatedCirclesD3 } from "./AnimatedCirclesD3";
 import { AnimatedCirclesReact } from "./AnimatedCirclesReact";
+import { AxisD3 } from "./AxisD3";
+
 import './App.css'
 
 export function App() {
@@ -20,6 +22,8 @@ export function App() {
             <AnimatedCirclesD3 />
             <h2>Reactで同様の機能</h2>
             <AnimatedCirclesReact />
+            <h2>軸(D3.js)</h2>
+            <AxisD3 />
         </>
     )
 }
