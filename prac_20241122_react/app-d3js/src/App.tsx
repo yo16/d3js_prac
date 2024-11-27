@@ -2,6 +2,7 @@ import { CircleD3 } from "./CircleD3";
 import { CirclesD3 } from "./CirclesD3";
 import { CirclesReact } from "./CirclesReact";
 import { AnimatedCirclesD3 } from "./AnimatedCirclesD3";
+import { AnimatedCirclesReact } from "./AnimatedCirclesReact";
 import './App.css'
 
 export function App() {
@@ -15,8 +16,10 @@ export function App() {
             <h2>Reactで同様の機能</h2>
             <CirclesReact />
             <h2>D3.jsを使った動くcircle</h2>
-            発生(enter)時に青、連続で選ばれたら灰色、選ばれない(exit)時に赤
+            発生(enter)時に青、連続で選ばれたら黄色、選ばれない(exit)時に赤
             <AnimatedCirclesD3 />
+            <h2>Reactで同様の機能</h2>
+            <AnimatedCirclesReact />
         </>
     )
 }
